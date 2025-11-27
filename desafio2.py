@@ -217,9 +217,13 @@ class Deposito(Transacao):
 def log_transacao(func):
     def envelope(*args, **kwargs):
         resultado = func(*args, **kwargs)
-        print(f"{datetime.now()}: {func.__name__.upper()}")
+        data_hora = datetime.utcnow().strftime("%d-%m-%Y %H:%M:%S")
+        
+        with open('log.txt', 'a') as arquivo: 
+            arquivo.write(   
+                f"[{data_hora}] Função '{func.__name__}' executada com {args} e {kwargs}. Retorno: {resultado}\n"
+            )
         return resultado
-
     return envelope
 
 
